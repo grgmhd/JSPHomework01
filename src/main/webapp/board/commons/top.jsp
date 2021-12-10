@@ -36,32 +36,36 @@
                     </form>
                     <!-- 회원가입/로그인 링크 -->
                     <ul class="navbar-nav">
-                        <!-- 로그인전 -->
+                    	<!-- 로그인후 -->
+<%
+				if(session.getAttribute("user_id") !=null) {
+%>
                         <li class="nav-item">
+                            <a class="nav-link" href="../member/Logout.jsp">
+                                <i class="bi-box-arrow-right" style="font-size: 1rem;"></i>
+                                로그아웃
+                            </a>
+                        </li>
+<%
+				}
+				else {
+%>
+                        <!-- 로그인전 -->
+                        <!-- <li class="nav-item">
                             <a class="nav-link" href="#">
                                 <i class="bi-person-plus-fill" style="font-size: 1rem;"></i>
                                 회원가입
                             </a>
-                        </li>
+                        </li> -->
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link" href="../member/Login.jsp">
                                 <i class="bi-box-arrow-in-right" style="font-size: 1rem;"></i>
                                 로그인
                             </a>
                         </li>
-                        <!-- 로그인후 -->
-                        <!-- <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="bi-person-lines-fill" style="font-size: 1rem;"></i>
-                                회원정보수정
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="bi-box-arrow-right" style="font-size: 1rem;"></i>
-                                로그아웃
-                            </a>
-                        </li> -->
+<%
+				}
+%>
                     </ul>
                 </div>
             </nav>

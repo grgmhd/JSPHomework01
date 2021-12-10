@@ -11,6 +11,28 @@
         .user_input{border:1px solid rgb(75, 75, 75);width:320px;height:27px;padding:10px;font-size:18px;}
         input[type=image]{margin-top: 2px;}
     </style>
+    <script>
+    <%
+	if(request.getAttribute("ErrMsg")!=null) {
+%>
+		alert('해당 정보로는 로그인할 수 없습니다.');
+<%
+	}
+%>
+    
+	function validForm(form) {
+		if(!form.id.value) {
+			alert("아이디를 입력하세요");
+			form.id.focus();
+			return false;
+		}
+		if(!form.passwd.value) {
+			alert("비밀번호를 입력하세요");
+			form.passwd.focus();
+			return false;
+		}
+	}
+    </script>
 </head>
 <body>
 <fieldset>
@@ -22,7 +44,7 @@
                         <td align="center"><img src="./images/login_logo.gif" /></td>
                     </tr>
                 </table>
-                <form name="myform" action="" method="post">
+                <form name="myform" action="LoginPrc.jsp" method="post" onsubmit="return validForm(this);">
                 <table width="470" border="0" cellpadding="0" cellspacing="0">
                     <tr>
                         <td width="350">
