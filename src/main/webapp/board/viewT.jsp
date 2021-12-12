@@ -11,6 +11,15 @@
 %>
 <%@ include file="./commons/header.jsp" %>
 <body>
+<script>
+	function delPost() {
+		var conf = confirm("현재 게시물을 삭제하시겠습니까?");
+		if(conf == true) {
+			document.imForm.action = "DeletePrc.jsp";
+			document.imForm.submit();
+		}
+	}
+</script>
 <div class="container">
     <!-- Top영역 -->
     <%@ include file="./commons/top.jsp" %>
@@ -22,7 +31,8 @@
         <div class="col-9 pt-3">
             <h3>게시판 내용보기 - <small>자유게시판</small></h3>
             
-            <form>
+            <form name="imForm" method="post">
+            	<input type="hidden" name="num" value="<%= dto.getNum() %>">
                 <table class="table table-bordered">
                 <colgroup>
                     <col width="20%"/>
@@ -75,7 +85,7 @@
 					&& session.getAttribute("user_id").toString().equals(dto.getId())) {
 %>
                         <button type="button" class="btn btn-secondary">수정하기</button>
-                        <button type="button" class="btn btn-success">삭제하기</button>
+                        <button type="button" class="btn btn-success" onclick="delPost();">삭제하기</button>
 <%
 				}
 %>

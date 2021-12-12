@@ -108,11 +108,26 @@ public class BoardDAO extends ConnOracle {
 		catch(Exception err) {
 			System.out.println("게시물 입력 중 예외발생");
 			err.printStackTrace();
-		}
-		
+		}		
 		return result;
 	}
 	
+	public int deletePost(BoardDTO dto) {
+		int result = 0;
+		
+		try {
+			String query = "DELETE FROM board WHERE num=?";
+			psmt = conn.prepareStatement(query);
+			psmt.setString(1, dto.getNum());
+			
+			result = psmt.executeUpdate();
+		}
+		catch(Exception err) {
+			System.out.println("게시물 삭제중 예외발생");
+			err.printStackTrace();
+		}
+		return result;
+	}
 	
 }
 
