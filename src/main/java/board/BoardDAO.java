@@ -129,6 +129,88 @@ public class BoardDAO extends ConnOracle {
 		return result;
 	}
 	
+	public int updateEdit(BoardDTO dto) {
+		int result = 0;
+		
+		try {
+			String query = "UPDATE board SET title=?, content=? WHERE num=?";
+			
+			psmt = conn.prepareStatement(query);
+			psmt.setString(1, dto.getTitle());
+			psmt.setString(2, dto.getContent());
+			psmt.setString(3, dto.getNum());
+			
+			result = psmt.executeUpdate();
+		}
+		catch(Exception err) {
+			System.out.println("게시물 수정 중 예외 발생");
+			err.printStackTrace();
+		}
+		return result;
+	}
+	
+	public int CountSel(Map<String, Object> map) {
+		int countAll = 0;
+		String query = "SELECT COUNT(*) FROM board";
+		
+		if(map.get("srchWord") !=null) {
+			query += "WHERE " + map.get("srchField") +" "
+					+ " LIKE '%" + map.get("srchWord") + "%'";
+		}
+		
+		try {
+			stmt = conn.createStatement();
+			rSet = stmt.executeQuery(query);
+			rSet.next();
+			countAll = rSet.getInt(1);
+		}
+		catch(Exception err) {
+			System.out.println("게시물 수를 구하는 중 예외발생");
+			err.printStackTrace();
+		}
+		return countAll;
+	}
+	
+	public List<BoardDTO> selectListPage(Map<String, Object> map) {
+		List<BoardDTO> selResult = new Vector<BoardDTO>();
+		
+		String query = "SELECT * FROM ( "
+					+ " SELECT tb.*, ROWNUM rNum FROM ( "
+					+ " SELECT * FROM board ";
+		
+		if(map.get("srchWord") !=null) {
+			query += " WHERE " + map.get("srchField")
+					+ " LIKE '%" + map.get("srchWord") + "%' ";
+		}
+		
+		query += " ORDER BY num DESC) tb) "
+				+ " WHERE rNum BETWEEN ? AND ?";
+		
+		try {
+			psmt = conn.prepareStatement(query);
+			psmt.setString(1, map.get("start").toString());
+			psmt.setString(2, map.get("end").toString());
+			rSet = psmt.executeQuery();
+			
+			while(rSet.next()) {
+				BoardDTO dto = new BoardDTO();
+				
+				dto.setNum(rSet.getString("num"));
+				dto.setTitle(rSet.getString("title"));
+				dto.setContent(rSet.getString("content"));
+				dto.setId(rSet.getString("id"));
+				dto.setPostdate(rSet.getDate("postdate"));
+				dto.setVisitcount(rSet.getString("visitcount"));
+				selResult.add(dto);
+			}
+		}
+		catch(Exception err) {
+			System.out.println("게시물 조회 중 예외 발생");
+			err.printStackTrace();
+		}
+		return selResult;
+	}
+	
 }
 
 

@@ -84,7 +84,8 @@
 				if(session.getAttribute("user_id") !=null
 					&& session.getAttribute("user_id").toString().equals(dto.getId())) {
 %>
-                        <button type="button" class="btn btn-secondary">수정하기</button>
+                        <button type="button" class="btn btn-secondary"
+                        	onclick="location.href='Edit.jsp?num=<%= dto.getNum() %>';">수정하기</button>
                         <button type="button" class="btn btn-success" onclick="delPost();">삭제하기</button>
 <%
 				}

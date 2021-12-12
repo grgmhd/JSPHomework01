@@ -48,10 +48,11 @@
                 <table width="470" border="0" cellpadding="0" cellspacing="0">
                     <tr>
                         <td width="350">
-                            <input type="text" name="id" placeholder="아이디" class="user_input" />
+                            <input type="text" name="id" placeholder="아이디" class="user_input" 
+                            	tabindex="1">
                         </td>
                         <td width="120" rowspan="3" align="right">
-                            <input type="image" src="./images/login_bt.gif" />
+                            <input type="image" src="./images/login_bt.gif" tabindex="3">
                         </td>
                     </tr>
                     <tr height="5">
@@ -59,7 +60,8 @@
                     </tr>
                     <tr>
                         <td>
-                            <input type="password" name="passwd" placeholder="****" class="user_input" />
+                            <input type="password" name="passwd" placeholder="****" class="user_input" 
+                            	tabindex="2">
                         </td>
                     </tr>
                 </table>

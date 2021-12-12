@@ -1,6 +1,22 @@
+<%@page import="board.BoardDTO"%>
+<%@page import="board.BoardDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="../member/IsLogin.jsp" %>
+<%
+	String num = request.getParameter("num");
+	BoardDAO dao = new BoardDAO();
+	BoardDTO dto = dao.selectView(num);
+	
+	String user_id = session.getAttribute("user_id").toString();
+	
+	if(!user_id.equals(dto.getId())) {
+		String script = "<script>alert('작성자 본인만 수정할 수 있습니다.');"
+				+ "history.back();</script>";
+		out.println(script);
+		return;
+	}
+%>
 <%@ include file="./commons/header.jsp" %>
 <body> 
 <script>
@@ -27,10 +43,11 @@
         <%@ include file="./commons/left.jsp" %>
         <!-- Contents영역 -->
         <div class="col-9 pt-3">
-            <h3>게시물 작성 - <small>자유게시판</small></h3>
+            <h3>게시물 수정 - <small>자유게시판</small></h3>
             
             <form enctype="multipart/form-data" onsubmit="return validForm(this);"
-            	action="WritePrc.jsp">
+            	action="EditPrc.jsp">
+            	<input type="hidden" name="num" value="<%= dto.getNum() %>">
                 <table class="table table-bordered">
                 <colgroup>
                     <col width="20%"/>
@@ -41,14 +58,15 @@
                         <th class="text-center" 
                             style="vertical-align:middle;">제목</th>
                         <td>
-                            <input type="text" name="title" class="form-control" />
+                            <input type="text" name="title" class="form-control" 
+                            	value="<%= dto.getTitle() %>">
                         </td>
                     </tr>
                     <tr>
                         <th class="text-center" 
                             style="vertical-align:middle;">내용</th>
                         <td>
-                            <textarea name="content" rows="5" class="form-control"></textarea>
+                            <textarea name="content" rows="5" class="form-control"><%= dto.getContent() %></textarea>
                         </td>
                     </tr>
                 </tbody>

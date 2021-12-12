@@ -6,6 +6,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <% 
+	//검색 기능을 위한 코드
 	BoardDAO dao = new BoardDAO();
 
 	Map<String, Object> param = new HashMap<String, Object>();
@@ -18,8 +19,37 @@
 		param.put("srchWord", srchWord);
 	}		
 	
-	List<BoardDTO> boardLists = dao.selectList(param);
+	
+	//paging 처리를 위한 코드
+	
+	int countAll = dao.CountSel(param);
+	
+	int pageSize = 10;
+	int blockPage = 5;
+	int totalPage = (int)Math.ceil((double)countAll/pageSize);
+	
+	
+	int pageNum = 1;
+	String thispage = request.getParameter("pageNum");
+	
+	if(thispage !=null && !thispage.equals("")) {
+		pageNum = Integer.parseInt(thispage);
+	}
+	
+	int countPages = (int)(Math.ceil((double)countAll/pageSize));
+	int pageTemp = (((pageNum-1)/blockPage)*blockPage)+1;
+	
+	int start = (pageNum-1) * pageSize+1;
+	int end = pageNum * pageSize;
+	
+	param.put("start", start);
+	param.put("end", end);
+	
+	
+	List<BoardDTO> boardLists = dao.selectListPage(param);
 	dao.close();
+	
+	request.setAttribute("uri", request.getRequestURI());
 %>
 <%@ include file="./commons/header.jsp" %>
 <body>
@@ -96,27 +126,8 @@
                 </div>
             </div>
             <!-- 페이지 번호 -->
-            <div class="row mt-3">
-                <div class="col">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item"><a class="page-link" href="#">
-                            <i class='bi bi-skip-backward-fill'></i>
-                        </a></li>
-                        <li class="page-item"><a class="page-link" href="#">
-                            <i class='bi bi-skip-start-fill'></i>
-                        </a></li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">
-                            <i class='bi bi-skip-end-fill'></i>
-                        </a></li>
-                        <li class="page-item"><a class="page-link" href="#">
-                            <i class='bi bi-skip-forward-fill'></i>
-                        </a></li>
-                    </ul>
-                </div>
-            </div>
+
+            <%@ include file="../paging/PagingBoard.jsp" %>
         </div>
     </div>
     <!-- Copyright영역 -->
